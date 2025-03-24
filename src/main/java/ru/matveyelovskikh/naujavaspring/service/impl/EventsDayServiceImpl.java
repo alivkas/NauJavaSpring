@@ -6,7 +6,6 @@ import ru.matveyelovskikh.naujavaspring.dto.EventsDayDto;
 import ru.matveyelovskikh.naujavaspring.entity.EventsDayEntity;
 import ru.matveyelovskikh.naujavaspring.entity.enums.EventStatus;
 import ru.matveyelovskikh.naujavaspring.exception.EventNotFoundException;
-import ru.matveyelovskikh.naujavaspring.repository.impl.EventsDayRepository;
 import ru.matveyelovskikh.naujavaspring.service.EventsDayService;
 
 import java.util.Map;
