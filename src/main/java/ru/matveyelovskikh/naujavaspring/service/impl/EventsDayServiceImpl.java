@@ -10,7 +10,6 @@ import ru.matveyelovskikh.naujavaspring.repository.impl.EventsDayRepository;
 import ru.matveyelovskikh.naujavaspring.service.EventsDayService;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Бизнес логика дневных событий
@@ -19,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EventsDayServiceImpl implements EventsDayService {
 
     private final EventsDayRepository eventsDayRepository;
-    private final AtomicInteger atomicInteger = new AtomicInteger();
 
     /**
      * Внедрение зависимостей eventsDayRepository
@@ -45,11 +43,9 @@ public class EventsDayServiceImpl implements EventsDayService {
 
     @Override
     public void createEventDay(EventsDayDto eventsDay) {
-        EventsDayEntity event =
-                new EventsDayEntity((long) atomicInteger.incrementAndGet(),
-                eventsDay.calendar(),
-                eventsDay.message(),
-                EventStatus.WAITING);
+        EventsDayEntity event = new EventsDayEntity(eventsDay.calendar(),
+                                                    eventsDay.message(),
+                                                    EventStatus.WAITING);
 
         eventsDayRepository.create(event);
     }
@@ -72,11 +68,9 @@ public class EventsDayServiceImpl implements EventsDayService {
                     "напоминание запрещено\n");
         }
 
-        EventsDayEntity entity =
-                new EventsDayEntity((long) atomicInteger.get(),
-                eventsDay.calendar(),
-                eventsDay.message(),
-                EventStatus.WAITING);
+        EventsDayEntity entity = new EventsDayEntity(eventsDay.calendar(),
+                                                     eventsDay.message(),
+                                                     EventStatus.WAITING);
 
         eventsDayRepository.update(id, entity);
     }

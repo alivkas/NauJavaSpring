@@ -7,6 +7,7 @@ import ru.matveyelovskikh.naujavaspring.repository.CrudRepository;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Доступ к данным дневных событий, реализующий
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class EventsDayRepository implements CrudRepository<EventsDayEntity, Long> {
 
     private final Map<Long, EventsDayEntity> eventsDayEntities;
+    private final AtomicInteger atomicInteger = new AtomicInteger();
 
     /**
      * Внедрение зависимости eventsDayEntities
@@ -28,6 +30,7 @@ public class EventsDayRepository implements CrudRepository<EventsDayEntity, Long
 
     @Override
     public void create(EventsDayEntity entity) {
+        entity.setId((long) atomicInteger.incrementAndGet());
         eventsDayEntities.put(entity.getId(), entity);
     }
 
@@ -43,6 +46,7 @@ public class EventsDayRepository implements CrudRepository<EventsDayEntity, Long
 
     @Override
     public void update(Long id, EventsDayEntity entity) {
+        entity.setId((long) atomicInteger.get());
         if (!id.equals(entity.getId())) {
             throw new IllegalArgumentException("ID не совпадают");
         }

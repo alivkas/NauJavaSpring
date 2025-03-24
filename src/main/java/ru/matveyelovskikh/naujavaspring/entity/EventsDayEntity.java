@@ -22,16 +22,13 @@ public class EventsDayEntity {
 
     /**
      * Конструктор для создания сущности
-     * @param id id
      * @param calendar календарь
      * @param message сообщение
      * @param eventStatus статус
      */
-    public EventsDayEntity(Long id,
-                           LocalDateTime calendar,
+    public EventsDayEntity(LocalDateTime calendar,
                            String message,
                            EventStatus eventStatus) {
-        this.id = id;
         this.calendar = calendar;
         this.message = message;
         this.eventStatus = eventStatus;

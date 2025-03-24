@@ -1,6 +1,5 @@
 package ru.matveyelovskikh.naujavaspring.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -9,10 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationConfig {
 
-    @Value("${app.name}")
-    private String appName;
-    @Value("${app.version}")
-    private String appVersion;
+    private final String appName = "NotifyCalendar";
+    private final String appVersion = "v1.0.1";
 
     /**
      * Получить название приложения
