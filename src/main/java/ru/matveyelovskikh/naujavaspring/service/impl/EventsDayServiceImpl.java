@@ -30,10 +30,8 @@ public class EventsDayServiceImpl implements EventsDayService {
 
     @Override
     public EventsDayEntity getEventById(Long id) {
-        if (eventsDayRepository.read(id).isEmpty()) {
-            throw new EventNotFoundException(id);
-        }
-        return eventsDayRepository.read(id).get();
+        return eventsDayRepository.read(id).orElseThrow(()
+                -> new EventNotFoundException(id));
     }
 
     @Override
@@ -52,17 +50,15 @@ public class EventsDayServiceImpl implements EventsDayService {
 
     @Override
     public void deleteById(Long id) {
-        if (eventsDayRepository.read(id).isEmpty()) {
-            throw new EventNotFoundException(id);
-        }
+        eventsDayRepository.read(id).orElseThrow(()
+                -> new EventNotFoundException(id));
         eventsDayRepository.delete(id);
     }
 
     @Override
     public void updateById(Long id, EventsDayDto eventsDay) {
-        if (eventsDayRepository.read(id).isEmpty()) {
-            throw new EventNotFoundException(id);
-        }
+        eventsDayRepository.read(id).orElseThrow(()
+                -> new EventNotFoundException(id));
         if (!getEventById(id).getEventStatus().equals(EventStatus.WAITING)) {
             throw new IllegalStateException("Изменение завершенного " +
                     "напоминание запрещено\n");
@@ -81,9 +77,8 @@ public class EventsDayServiceImpl implements EventsDayService {
         if (entity.getEventStatus().equals(EventStatus.WAITING)) {
             throw new IllegalStateException("Событие с ID: " + id + " еще не активно\n");
         }
-        if (eventsDayRepository.read(id).isEmpty()) {
-            throw new EventNotFoundException(id);
-        }
+        eventsDayRepository.read(id).orElseThrow(()
+                -> new EventNotFoundException(id));
         entity.setEventStatus(EventStatus.CLOSED);
     }
 }
