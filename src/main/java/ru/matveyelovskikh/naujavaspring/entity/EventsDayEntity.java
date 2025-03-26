@@ -5,6 +5,7 @@ import ru.matveyelovskikh.naujavaspring.entity.base.BasicEntity;
 import ru.matveyelovskikh.naujavaspring.entity.enums.EventStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,6 @@ public class EventsDayEntity extends BasicEntity {
     @Column(name = "event_status")
     private EventStatus eventStatus;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
@@ -33,7 +33,7 @@ public class EventsDayEntity extends BasicEntity {
     private LocationEntity location;
 
     @OneToMany(mappedBy = "eventsDay", cascade = CascadeType.ALL)
-    private List<NotificationEntity> notification;
+    private List<NotificationEntity> notification = new ArrayList<>();
 
     /**
      * Пустой конструктор для инициализации
@@ -46,13 +46,22 @@ public class EventsDayEntity extends BasicEntity {
      * @param calendar календарь
      * @param message сообщение
      * @param eventStatus статус
+     * @param user пользователь
+     * @param eventCategory категория события
+     * @param location место события
      */
     public EventsDayEntity(LocalDateTime calendar,
                            String message,
-                           EventStatus eventStatus) {
+                           EventStatus eventStatus,
+                           UserEntity user,
+                           EventCategoryEntity eventCategory,
+                           LocationEntity location) {
         this.calendar = calendar;
         this.message = message;
         this.eventStatus = eventStatus;
+        this.user = user;
+        this.eventCategory = eventCategory;
+        this.location = location;
     }
 
     /**

@@ -1,36 +1,53 @@
 package ru.matveyelovskikh.naujavaspring.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import ru.matveyelovskikh.naujavaspring.dto.NotificationDto;
 import ru.matveyelovskikh.naujavaspring.entity.EventsDayEntity;
+import ru.matveyelovskikh.naujavaspring.entity.NotificationEntity;
+import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
 import ru.matveyelovskikh.naujavaspring.entity.enums.EventStatus;
-import ru.matveyelovskikh.naujavaspring.interfaces.InputOutput;
+import ru.matveyelovskikh.naujavaspring.exception.EventNotFoundException;
+import ru.matveyelovskikh.naujavaspring.exception.UserNotFoundException;
+import ru.matveyelovskikh.naujavaspring.mapstruct.NotificationMapper;
+import ru.matveyelovskikh.naujavaspring.repository.EventsDayCrud;
+import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
 import ru.matveyelovskikh.naujavaspring.service.EventsDayService;
 import ru.matveyelovskikh.naujavaspring.service.NotificationService;
 
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Реализация сервиса уведомлений
  */
 @Service
+
 public class NotificationServiceImpl implements NotificationService {
 
+    private static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
+
     private final EventsDayService eventsDayService;
-    private final InputOutput console;
+    private final NotificationMapper notificationMapper;
+    private final UserCrud userCrud;
+    private final EventsDayCrud eventsDayCrud;
 
     /**
      * Внедрение зависимостей eventsDayService, console
      * @param eventsDayService сервис событий дня
-     * @param console консоль
      */
     @Autowired
     public NotificationServiceImpl(EventsDayService eventsDayService,
-                                   InputOutput console) {
+                                   NotificationMapper notificationMapper,
+                                   UserCrud userCrud,
+                                   EventsDayCrud eventsDayCrud) {
         this.eventsDayService = eventsDayService;
-        this.console = console;
+        this.notificationMapper = notificationMapper;
+        this.userCrud = userCrud;
+        this.eventsDayCrud = eventsDayCrud;
     }
 
     @Override
@@ -42,17 +59,31 @@ public class NotificationServiceImpl implements NotificationService {
     @Scheduled(cron = "${cron.event.time}")
     @Override
     public void eventNotify() {
-        Map<Long, EventsDayEntity> events = eventsDayService.getAllEvents();
-        for (Map.Entry<Long, EventsDayEntity> entry : events.entrySet()) {
-            EventsDayEntity entity = entry.getValue();
-
-            if (shouldNotify(entity.getCalendar())) {
-                entity.setEventStatus(EventStatus.ACTIVE);
-                console.output("================================================\n"
-                        + "Напоминание от " + entity.getCalendar() + "\n"
-                        + "Сообщение: " + entity.getMessage() + "\n"
-                        + "================================================\n");
+        List<EventsDayEntity> events = eventsDayService.getAllEvents();
+        for (EventsDayEntity event : events) {
+            if (shouldNotify(event.getCalendar())) {
+                event.setEventStatus(EventStatus.ACTIVE);
+                log.info("""
+                        ================================================
+                        Напоминание от {}
+                        Сообщение: {}
+                        ================================================
+                        """,
+                        event.getCalendar(),
+                        event.getMessage());
             }
         }
+    }
+
+    @Override
+    public NotificationEntity createAndGetNotify(NotificationDto notificationDto) {
+        UserEntity user = userCrud.findById(notificationDto.userId()).orElseThrow(()
+                -> new UserNotFoundException(notificationDto.userId()));
+        EventsDayEntity eventsDay = eventsDayCrud.findById(notificationDto.eventsDayId()).orElseThrow(()
+                -> new EventNotFoundException(notificationDto.eventsDayId()));
+
+        return notificationMapper.toEntity(notificationDto,
+                user,
+                eventsDay);
     }
 }

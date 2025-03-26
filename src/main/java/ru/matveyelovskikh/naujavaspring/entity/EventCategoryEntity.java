@@ -3,6 +3,7 @@ package ru.matveyelovskikh.naujavaspring.entity;
 import jakarta.persistence.*;
 import ru.matveyelovskikh.naujavaspring.entity.base.BasicEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class EventCategoryEntity extends BasicEntity {
     private Boolean isArchived;
 
     @OneToMany(mappedBy = "eventCategory", cascade = CascadeType.ALL)
-    private List<EventsDayEntity> eventsDay;
+    private List<EventsDayEntity> eventsDay = new ArrayList<>();
 
     public EventCategoryEntity() {
     }
@@ -36,20 +37,17 @@ public class EventCategoryEntity extends BasicEntity {
      * @param isVisible видна ли категория
      * @param isDefault по умолчанию ли категория
      * @param isArchived архивировано ли категория
-     * @param eventsDay список событий дня категории
      */
     public EventCategoryEntity(String name,
                                String description,
                                Boolean isVisible,
                                Boolean isDefault,
-                               Boolean isArchived,
-                               List<EventsDayEntity> eventsDay) {
+                               Boolean isArchived) {
         this.name = name;
         this.description = description;
         this.isVisible = isVisible;
         this.isDefault = isDefault;
         this.isArchived = isArchived;
-        this.eventsDay = eventsDay;
     }
 
     /**

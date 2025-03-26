@@ -42,10 +42,8 @@ public class AllEventCommand implements Command {
         if (eventsDayService.getAllEvents().isEmpty()) {
             console.output("Нет запланированных событий\n");
         }
-
-        for (Map.Entry<Long, EventsDayEntity> entry : eventsDayService.getAllEvents()
-                .entrySet()) {
-            console.output(entry.getValue().toString());
+        for (EventsDayEntity event : eventsDayService.getAllEvents()) {
+            console.output(event.toString());
         }
     }
 }

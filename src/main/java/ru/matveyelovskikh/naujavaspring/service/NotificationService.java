@@ -1,5 +1,8 @@
 package ru.matveyelovskikh.naujavaspring.service;
 
+import ru.matveyelovskikh.naujavaspring.dto.NotificationDto;
+import ru.matveyelovskikh.naujavaspring.entity.NotificationEntity;
+
 import java.time.LocalDateTime;
 
 /**
@@ -18,4 +21,11 @@ public interface NotificationService {
      * Уведомить о наступлении события
      */
     void eventNotify();
+
+    /**
+     * Создать и получить сущность уведомление
+     * @param notificationDto дто уведомления
+     * @return сущность уведомления
+     */
+    NotificationEntity createAndGetNotify(NotificationDto notificationDto);
 }

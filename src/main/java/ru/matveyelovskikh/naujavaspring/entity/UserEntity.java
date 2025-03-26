@@ -3,6 +3,7 @@ package ru.matveyelovskikh.naujavaspring.entity;
 import jakarta.persistence.*;
 import ru.matveyelovskikh.naujavaspring.entity.base.BasicEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,9 +27,9 @@ public class UserEntity extends BasicEntity {
     private Boolean isAdmin;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<EventsDayEntity> eventsDay;
+    private List<EventsDayEntity> eventsDay = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<NotificationEntity> notification;
+    private List<NotificationEntity> notification = new ArrayList<>();
 
     public UserEntity() {
     }
@@ -41,25 +42,19 @@ public class UserEntity extends BasicEntity {
      * @param isActive активен ли пользователь
      * @param isEmailVerified подтверждена ли почта
      * @param isAdmin админ ли пользователь
-     * @param eventsDay список событий дня пользователя
-     * @param notification уведомление пользователя
      */
     public UserEntity(String username,
                       String password,
                       String email,
                       Boolean isActive,
                       Boolean isEmailVerified,
-                      Boolean isAdmin,
-                      List<EventsDayEntity> eventsDay,
-                      List<NotificationEntity> notification) {
+                      Boolean isAdmin) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.isActive = isActive;
         this.isEmailVerified = isEmailVerified;
         this.isAdmin = isAdmin;
-        this.eventsDay = eventsDay;
-        this.notification = notification;
     }
 
     /**

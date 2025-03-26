@@ -3,6 +3,7 @@ package ru.matveyelovskikh.naujavaspring.entity;
 import jakarta.persistence.*;
 import ru.matveyelovskikh.naujavaspring.entity.base.BasicEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class LocationEntity extends BasicEntity {
     private Boolean isArchived;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    private List<EventsDayEntity> eventsDay;
+    private List<EventsDayEntity> eventsDay = new ArrayList<>();
 
     public LocationEntity() {
     }
