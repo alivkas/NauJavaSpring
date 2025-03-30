@@ -2,11 +2,9 @@ package ru.matveyelovskikh.naujavaspring.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.matveyelovskikh.naujavaspring.dto.EventsDayDto;
-import ru.matveyelovskikh.naujavaspring.dto.NotificationDto;
 import ru.matveyelovskikh.naujavaspring.entity.*;
 import ru.matveyelovskikh.naujavaspring.entity.enums.EventStatus;
 import ru.matveyelovskikh.naujavaspring.events.EventsDayCreatedEvent;
@@ -18,7 +16,6 @@ import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
 import ru.matveyelovskikh.naujavaspring.service.EventCategoryService;
 import ru.matveyelovskikh.naujavaspring.service.EventsDayService;
 import ru.matveyelovskikh.naujavaspring.service.LocationService;
-import ru.matveyelovskikh.naujavaspring.service.NotificationService;
 
 import java.util.List;
 
@@ -40,6 +37,9 @@ public class EventsDayServiceImpl implements EventsDayService {
      * @param eventsDayCrud бин репозитория дневных событий
      * @param userCrud crud пользователя
      * @param eventMapper crud маппера событий
+     * @param locationService сервис локации
+     * @param eventCategoryService сервис категории
+     * @param eventPublisher паблишер событий
      */
     @Autowired
     public EventsDayServiceImpl(EventsDayCrud eventsDayCrud,
@@ -83,13 +83,6 @@ public class EventsDayServiceImpl implements EventsDayService {
                 category,
                 location
         );
-
-//        NotificationEntity notification = notificationService.createAndGetNotify(
-//                new NotificationDto(event.getMessage(),
-//                        event.getId(),
-//                        event.getUser().getId()));
-//
-//        event.getNotification().add(notification);
 
         eventsDayCrud.save(event);
         eventPublisher.publishEvent(new EventsDayCreatedEvent(event));

@@ -31,20 +31,32 @@ public class UserCriteriaRepositoryImpl implements UserCriteriaRepository {
     }
 
     @Override
-    public Optional<UserEntity> findByUsernameOrEmail(String username, String email) {
+    public boolean existsByUsernameAndEmail(String username, String email) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserEntity> query = criteriaBuilder.createQuery(UserEntity.class);
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<UserEntity> user = query.from(UserEntity.class);
 
         Predicate usernamePredicate = criteriaBuilder.equal(user.get("username"), username);
         Predicate emailPredicate = criteriaBuilder.equal(user.get("email"), email);
-        Predicate orPredicate = criteriaBuilder.or(usernamePredicate, emailPredicate);
+        Predicate andPredicate = criteriaBuilder.and(usernamePredicate, emailPredicate);
 
-        query.select(user).where(orPredicate);
+        query.where(andPredicate);
+        query.select(criteriaBuilder.count(user));
+
+        return entityManager.createQuery(query).getSingleResult() > 0;
+    }
+
+    @Override
+    public Optional<UserEntity> findById(Long id) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UserEntity> cq = cb.createQuery(UserEntity.class);
+        Root<UserEntity> user = cq.from(UserEntity.class);
+
+        cq.where(cb.equal(user.get("id"), id));
 
         try {
-            UserEntity result = entityManager.createQuery(query).getSingleResult();
-            return Optional.ofNullable(result);
+            UserEntity result = entityManager.createQuery(cq).getSingleResult();
+            return Optional.of(result);
         } catch (NoResultException e) {
             return Optional.empty();
         }

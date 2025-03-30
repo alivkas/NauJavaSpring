@@ -9,7 +9,7 @@ import ru.matveyelovskikh.naujavaspring.dto.NotificationDto;
 import ru.matveyelovskikh.naujavaspring.entity.EventsDayEntity;
 import ru.matveyelovskikh.naujavaspring.entity.NotificationEntity;
 import ru.matveyelovskikh.naujavaspring.events.EventsDayCreatedEvent;
-import ru.matveyelovskikh.naujavaspring.repository.EventsDayCrud;
+import ru.matveyelovskikh.naujavaspring.repository.NotificationCrud;
 import ru.matveyelovskikh.naujavaspring.service.NotificationService;
 
 /**
@@ -19,18 +19,18 @@ import ru.matveyelovskikh.naujavaspring.service.NotificationService;
 public class NotificationListener {
 
     private final NotificationService notificationService;
-    private final EventsDayCrud eventsDayCrud;
+    private final NotificationCrud notificationCrud;
 
     /**
      * Внедрение зависимостей NotificationService, EventsDayCrud
      * @param notificationService сервис уведомлений
-     * @param eventsDayCrud crud событий дня
+     * @param notificationCrud crud уведомлений
      */
     @Autowired
     public NotificationListener(NotificationService notificationService,
-                                EventsDayCrud eventsDayCrud) {
+                                NotificationCrud notificationCrud) {
         this.notificationService = notificationService;
-        this.eventsDayCrud = eventsDayCrud;
+        this.notificationCrud = notificationCrud;
     }
 
     /**
@@ -46,7 +46,10 @@ public class NotificationListener {
                         eventsDay.getCalendar(),
                         eventsDay.getId(),
                         eventsDay.getUser().getId()));
+
         eventsDay.getNotification().add(notification);
-        eventsDayCrud.save(eventsDay);
+        eventsDay.getUser().getNotification().add(notification);
+
+        notificationCrud.save(notification);
     }
 }

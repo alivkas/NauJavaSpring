@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Внедрение зависимости UserCrud
      * @param userCrud crud операции над пользователем
+     * @param userMapper маппер пользователя
      */
     @Autowired
     public UserServiceImpl(UserCrud userCrud,

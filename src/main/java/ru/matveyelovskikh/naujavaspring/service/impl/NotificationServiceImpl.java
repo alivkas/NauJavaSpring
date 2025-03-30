@@ -38,6 +38,9 @@ public class NotificationServiceImpl implements NotificationService {
     /**
      * Внедрение зависимостей eventsDayService, console
      * @param eventsDayService сервис событий дня
+     * @param notificationMapper маппер уведомлений
+     * @param userCrud crud пользователя
+     * @param eventsDayCrud crud событий дня
      */
     @Autowired
     public NotificationServiceImpl(EventsDayService eventsDayService,

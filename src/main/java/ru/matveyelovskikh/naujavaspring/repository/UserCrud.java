@@ -3,8 +3,6 @@ package ru.matveyelovskikh.naujavaspring.repository;
 import org.springframework.data.repository.CrudRepository;
 import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
 
-import java.util.Optional;
-
 /**
  * CRUD интерфейс UserEntity
  */

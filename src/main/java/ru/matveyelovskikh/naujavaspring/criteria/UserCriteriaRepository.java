@@ -10,10 +10,17 @@ import java.util.Optional;
 public interface UserCriteriaRepository {
 
     /**
-     * Найти пользователя по его имени или по его почте
+     * Узнать существует ли пользователь по его имени и почте
      * @param username имя пользователя
      * @param email почта пользователя
-     * @return сущность пользователя, если она существует
+     * @return true - есть в бд, false - нет в бд
      */
-    Optional<UserEntity> findByUsernameOrEmail(String username, String email);
+    boolean existsByUsernameAndEmail(String username, String email);
+
+    /**
+     * Найти пользователя по id
+     * @param id id пользователя
+     * @return пользователя, если он есть
+     */
+    Optional<UserEntity> findById(Long id);
 }

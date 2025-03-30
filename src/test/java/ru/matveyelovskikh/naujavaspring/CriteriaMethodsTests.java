@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import ru.matveyelovskikh.naujavaspring.criteria.NotificationCriteriaRepository;
+import ru.matveyelovskikh.naujavaspring.criteria.UserCriteriaRepository;
 import ru.matveyelovskikh.naujavaspring.dto.EventCategoryDto;
 import ru.matveyelovskikh.naujavaspring.dto.EventsDayDto;
 import ru.matveyelovskikh.naujavaspring.dto.LocationDto;
 import ru.matveyelovskikh.naujavaspring.entity.NotificationEntity;
 import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
-import ru.matveyelovskikh.naujavaspring.repository.NotificationCrud;
 import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
 import ru.matveyelovskikh.naujavaspring.service.EventsDayService;
 
@@ -21,30 +22,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Тестирование методов репозитория, написанных при помощи
- * Query Lookup Strategies, а также JPQL
+ * Тестирование методов, написанных при помощи Criteria API
  */
 @SpringBootTest
-public class QueryMethodsTests {
+public class CriteriaMethodsTests {
 
-    private final UserCrud userCrud;
-    private final NotificationCrud notificationCrud;
+    private final UserCriteriaRepository userCriteriaRepository;
+    private final NotificationCriteriaRepository notificationCriteriaRepository;
     private final EventsDayService eventsDayService;
+    private final UserCrud userCrud;
 
     /**
-     * Внедрение зависимостей UserCrud, NotificationCrud, EventsDayService
-     * UserService
-     * @param userCrud crud пользователя
-     * @param notificationCrud crud уведомления
+     * Внедрение зависимостей UserCriteriaRepository, NotificationCriteriaRepository,
+     * EventsDayService, UserService
+     * @param userCriteriaRepository репозиторий criteria пользователя
+     * @param notificationCriteriaRepository репозиторий criteria уведомления
      * @param eventsDayService сервис событий дня
+     * @param userCrud crud пользователя
      */
     @Autowired
-    public QueryMethodsTests(UserCrud userCrud,
-                             NotificationCrud notificationCrud,
-                             EventsDayService eventsDayService) {
-        this.userCrud = userCrud;
-        this.notificationCrud = notificationCrud;
+    public CriteriaMethodsTests(UserCriteriaRepository userCriteriaRepository,
+                                NotificationCriteriaRepository notificationCriteriaRepository,
+                                EventsDayService eventsDayService,
+                                UserCrud userCrud) {
+        this.userCriteriaRepository = userCriteriaRepository;
+        this.notificationCriteriaRepository = notificationCriteriaRepository;
         this.eventsDayService = eventsDayService;
+        this.userCrud = userCrud;
     }
 
     /**
@@ -52,12 +56,12 @@ public class QueryMethodsTests {
      */
     @BeforeEach
     public void init() {
-        UserEntity user = new UserEntity("test",
+         UserEntity user = new UserEntity("test",
                 "test",
                 "test",
-                Boolean.TRUE,
-                Boolean.FALSE,
-                Boolean.FALSE);
+                 Boolean.TRUE,
+                 Boolean.FALSE,
+                 Boolean.FALSE);
         userCrud.save(user);
     }
 
@@ -75,7 +79,8 @@ public class QueryMethodsTests {
      */
     @Test
     public void testExistsByUsernameAndEmail() {
-        boolean isExist = userCrud.existsByUsernameAndEmail("test", "test");
+        boolean isExist = userCriteriaRepository.existsByUsernameAndEmail("test",
+                "test");
         Assertions.assertTrue(isExist);
     }
 
@@ -84,7 +89,7 @@ public class QueryMethodsTests {
      */
     @Test
     public void testNotExistsByUsernameAndEmail() {
-        boolean isExist = userCrud.existsByUsernameAndEmail("name", "email");
+        boolean isExist = userCriteriaRepository.existsByUsernameAndEmail("name", "email");
         Assertions.assertFalse(isExist);
     }
 
@@ -96,23 +101,23 @@ public class QueryMethodsTests {
     public void testFindAllNotificationsByUser() {
         Long userId = userCrud.findAll().iterator().next().getId();
 
-        EventCategoryDto categoryDto = new EventCategoryDto("job", "descr");
-        LocationDto locationDto = new LocationDto("site",
-                "www.site.com",
-                Boolean.TRUE,
+        EventCategoryDto categoryDto = new EventCategoryDto("school", "descr");
+        LocationDto locationDto = new LocationDto("school 1",
+                "Lenina 1",
+                Boolean.FALSE,
                 Boolean.FALSE);
 
         EventsDayDto eventsDayDto = new EventsDayDto(LocalDateTime.now(),
-                "message for user",
+                "message for student",
                 userId,
                 categoryDto,
                 locationDto);
         eventsDayService.createEventDay(eventsDayDto);
 
-        List<NotificationEntity> expectAsList = new ArrayList<>(userCrud.findById(userId)
+        List<NotificationEntity> expectAsList = new ArrayList<>(userCriteriaRepository.findById(userId)
                 .get().getNotification());
-        List<NotificationEntity> actual = notificationCrud.findAllByUser(
-                userCrud.findById(userId).get());
+        List<NotificationEntity> actual = notificationCriteriaRepository.findAllByUser(userCrud
+                .findById(userId).get());
 
         Assertions.assertEquals(expectAsList, actual);
     }
