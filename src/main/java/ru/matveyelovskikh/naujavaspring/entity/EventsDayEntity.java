@@ -1,18 +1,39 @@
 package ru.matveyelovskikh.naujavaspring.entity;
 
+import jakarta.persistence.*;
+import ru.matveyelovskikh.naujavaspring.entity.base.BasicEntity;
 import ru.matveyelovskikh.naujavaspring.entity.enums.EventStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Сущность события дня
  */
-public class EventsDayEntity {
+@Entity
+@Table(name = "tbl_events_day")
+public class EventsDayEntity extends BasicEntity {
 
-    private Long id;
+    @Column(name = "calendar")
     private LocalDateTime calendar;
+    @Column(name = "message")
     private String message;
+    @Column(name = "event_status")
     private EventStatus eventStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+    @ManyToOne
+    @JoinColumn(name = "event_category_id", nullable = false)
+    private EventCategoryEntity eventCategory;
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    private LocationEntity location;
+
+    @OneToMany(mappedBy = "eventsDay", cascade = CascadeType.ALL)
+    private List<NotificationEntity> notification = new ArrayList<>();
 
     /**
      * Пустой конструктор для инициализации
@@ -25,29 +46,22 @@ public class EventsDayEntity {
      * @param calendar календарь
      * @param message сообщение
      * @param eventStatus статус
+     * @param user пользователь
+     * @param eventCategory категория события
+     * @param location место события
      */
     public EventsDayEntity(LocalDateTime calendar,
                            String message,
-                           EventStatus eventStatus) {
+                           EventStatus eventStatus,
+                           UserEntity user,
+                           EventCategoryEntity eventCategory,
+                           LocationEntity location) {
         this.calendar = calendar;
         this.message = message;
         this.eventStatus = eventStatus;
-    }
-
-    /**
-     * Получить id
-     * @return id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Установить id
-     * @param id id
-     */
-    public void setId(Long id) {
-        this.id = id;
+        this.user = user;
+        this.eventCategory = eventCategory;
+        this.location = location;
     }
 
     /**
@@ -98,10 +112,73 @@ public class EventsDayEntity {
         this.eventStatus = eventStatus;
     }
 
+    /**
+     * Получить пользователя события дня
+     * @return пользователь события дня
+     */
+    public UserEntity getUser() {
+        return user;
+    }
+
+    /**
+     * Установить пользователя события дня
+     * @param user пользователь события дня
+     */
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    /**
+     * Получить категорию события дня
+     * @return категория события дня
+     */
+    public EventCategoryEntity getEventCategory() {
+        return eventCategory;
+    }
+
+    /**
+     * Установить категорию события дня
+     * @param eventCategory категория события дня
+     */
+    public void setEventCategory(EventCategoryEntity eventCategory) {
+        this.eventCategory = eventCategory;
+    }
+
+    /**
+     * Получить место события дня
+     * @return место события дня
+     */
+    public LocationEntity getLocation() {
+        return location;
+    }
+
+    /**
+     * Установить место события дня
+     * @param location место события дня
+     */
+    public void setLocation(LocationEntity location) {
+        this.location = location;
+    }
+
+    /**
+     * Получить список уведомлений события дня
+     * @return список уведомлений события дня
+     */
+    public List<NotificationEntity> getNotification() {
+        return notification;
+    }
+
+    /**
+     * Установить список уведомлений события дня
+     * @param notification список уведомлений события дня
+     */
+    public void setNotification(List<NotificationEntity> notification) {
+        this.notification = notification;
+    }
+
     @Override
     public String toString() {
         return "Событие " + "\n" +
-                "ID: " + id + "\n" +
                 "Дата события: " + calendar + "\n" +
                 "Сообщение: " + message + "\n" +
                 "Статус напоминания: " + eventStatus + "\n" +

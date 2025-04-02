@@ -1,10 +1,11 @@
 package ru.matveyelovskikh.naujavaspring.service;
 
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.matveyelovskikh.naujavaspring.configuration.ApplicationConfig;
-import ru.matveyelovskikh.naujavaspring.interfaces.InputOutput;
 
 /**
  * Сервис информации о приложении
@@ -12,19 +13,17 @@ import ru.matveyelovskikh.naujavaspring.interfaces.InputOutput;
 @Service
 public class ApplicationInfoService {
 
+    private static final Logger log = LoggerFactory.getLogger(ApplicationInfoService.class);
+
     private final ApplicationConfig applicationConfig;
-    private final InputOutput console;
 
     /**
      * Внедрение зависимостей applicationConfig, console
      * @param applicationConfig конфигурация приложения
-     * @param console консольный I/O
      */
     @Autowired
-    public ApplicationInfoService(ApplicationConfig applicationConfig,
-                                  InputOutput console) {
+    public ApplicationInfoService(ApplicationConfig applicationConfig) {
         this.applicationConfig = applicationConfig;
-        this.console = console;
     }
 
     /**
@@ -33,7 +32,7 @@ public class ApplicationInfoService {
      */
     @PostConstruct
     public void printAppInfoAfter() {
-        console.output("Название приложения: " + applicationConfig.getAppName());
-        console.output("Версия: " + applicationConfig.getAppVersion());
+        log.info("Название приложения: {}", applicationConfig.getAppName());
+        log.info("Версия: {}", applicationConfig.getAppVersion());
     }
 }

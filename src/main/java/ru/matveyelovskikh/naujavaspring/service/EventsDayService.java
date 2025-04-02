@@ -3,6 +3,7 @@ package ru.matveyelovskikh.naujavaspring.service;
 import ru.matveyelovskikh.naujavaspring.dto.EventsDayDto;
 import ru.matveyelovskikh.naujavaspring.entity.EventsDayEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +22,7 @@ public interface EventsDayService {
      * Получить все события
      * @return список событий
      */
-    Map<Long, EventsDayEntity> getAllEvents();
+    List<EventsDayEntity> getAllEvents();
 
     /**
      * Создать событие

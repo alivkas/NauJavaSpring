@@ -9,5 +9,4 @@ class NauJavaSpringApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

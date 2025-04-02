@@ -7,7 +7,7 @@ public class EventNotFoundException extends RuntimeException {
 
     /**
      * Сообщение исключения
-     * @param id id исключения
+     * @param id id события
      */
     public EventNotFoundException(Long id) {
         super("Запись с id: " + id + " не найдена");

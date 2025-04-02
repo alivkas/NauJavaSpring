@@ -34,26 +34,26 @@ public class PrintApplicationConfig {
         this.console = console;
     }
 
-    /**
-     * Бин для работы с командной строкой
-     * @return аргументы командной строки
-     */
-    @Bean
-    @Scope(value = BeanDefinition.SCOPE_SINGLETON)
-    public CommandLineRunner commandLineRunner() {
-        return args -> {
-            console.output("""
-                    Введите команду /info для информации о других командах
-                    Введите команду /exit для выхода из приложения
-                    """);
-            while (true) {
-                String input = console.input();
-                if ("/exit".equalsIgnoreCase(input.trim())) {
-                    console.output("Выход из программы...");
-                    break;
-                }
-                commandProcessing.handleCommand(input);
-            }
-        };
-    }
+//    /**
+//     * Бин для работы с командной строкой
+//     * @return аргументы командной строки
+//     */
+//    @Bean
+//    @Scope(value = BeanDefinition.SCOPE_SINGLETON)
+//    public CommandLineRunner commandLineRunner() {
+//        return args -> {
+//            console.output("""
+//                    Введите команду /info для информации о других командах
+//                    Введите команду /exit для выхода из приложения
+//                    """);
+//            while (true) {
+//                String input = console.input();
+//                if ("/exit".equalsIgnoreCase(input.trim())) {
+//                    console.output("Выход из программы...");
+//                    break;
+//                }
+//                commandProcessing.handleCommand(input);
+//            }
+//        };
+//    }
 }
