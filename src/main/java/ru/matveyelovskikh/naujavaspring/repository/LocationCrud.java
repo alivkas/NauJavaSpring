@@ -1,6 +1,7 @@
 package ru.matveyelovskikh.naujavaspring.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.matveyelovskikh.naujavaspring.entity.LocationEntity;
 
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.Optional;
 /**
  * CRUD интерфейс LocationEntity
  */
+@RepositoryRestResource(path = "location")
 public interface LocationCrud extends CrudRepository<LocationEntity, Long> {
 
     /**

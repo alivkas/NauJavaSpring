@@ -5,6 +5,8 @@ package ru.matveyelovskikh.naujavaspring.exception;
  */
 public class EventNotFoundException extends RuntimeException {
 
+    public final static Integer CODE = 404;
+
     /**
      * Сообщение исключения
      * @param id id события

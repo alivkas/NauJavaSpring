@@ -1,11 +1,13 @@
 package ru.matveyelovskikh.naujavaspring.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
 
 /**
  * CRUD интерфейс UserEntity
  */
+@RepositoryRestResource(path = "user")
 public interface UserCrud extends CrudRepository<UserEntity, Long> {
 
     /**
