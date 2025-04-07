@@ -14,6 +14,7 @@ import ru.matveyelovskikh.naujavaspring.exception.EventNotFoundException;
 import ru.matveyelovskikh.naujavaspring.exception.UserNotFoundException;
 import ru.matveyelovskikh.naujavaspring.mapstruct.NotificationMapper;
 import ru.matveyelovskikh.naujavaspring.repository.EventsDayCrud;
+import ru.matveyelovskikh.naujavaspring.repository.NotificationCrud;
 import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
 import ru.matveyelovskikh.naujavaspring.service.EventsDayService;
 import ru.matveyelovskikh.naujavaspring.service.NotificationService;
@@ -34,23 +35,28 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationMapper notificationMapper;
     private final UserCrud userCrud;
     private final EventsDayCrud eventsDayCrud;
+    private final NotificationCrud notificationCrud;
 
     /**
-     * Внедрение зависимостей eventsDayService, console
+     * Внедрение зависимостей eventsDayService, notificationMapper,
+     * userCrud, eventsDayCrud, notificationCrud
      * @param eventsDayService сервис событий дня
      * @param notificationMapper маппер уведомлений
      * @param userCrud crud пользователя
      * @param eventsDayCrud crud событий дня
+     * @param notificationCrud crud уведомлений
      */
     @Autowired
     public NotificationServiceImpl(EventsDayService eventsDayService,
                                    NotificationMapper notificationMapper,
                                    UserCrud userCrud,
-                                   EventsDayCrud eventsDayCrud) {
+                                   EventsDayCrud eventsDayCrud,
+                                   NotificationCrud notificationCrud) {
         this.eventsDayService = eventsDayService;
         this.notificationMapper = notificationMapper;
         this.userCrud = userCrud;
         this.eventsDayCrud = eventsDayCrud;
+        this.notificationCrud = notificationCrud;
     }
 
     @Override
@@ -88,5 +94,13 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationMapper.toEntity(notificationDto,
                 user,
                 eventsDay);
+    }
+
+    @Override
+    public List<NotificationDto> getAllNotificationsByUser(Long userId) {
+        UserEntity user = userCrud.findById(userId).orElseThrow(()
+                -> new UserNotFoundException(userId));
+        List<NotificationEntity> notifications = notificationCrud.findAllByUser(user);
+        return notificationMapper.toDtoList(notifications);
     }
 }
