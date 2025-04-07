@@ -1,17 +1,18 @@
 package ru.matveyelovskikh.naujavaspring.entity;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import ru.matveyelovskikh.naujavaspring.entity.base.BasicEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Сущность пользователя
  */
 @Entity
 @Table(name = "tbl_user")
-public class UserEntity extends BasicEntity {
+public class UserEntity extends BasicEntity implements UserDetails {
 
     @Column(name = "username")
     private String username;
@@ -30,6 +31,18 @@ public class UserEntity extends BasicEntity {
     private List<EventsDayEntity> eventsDay = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NotificationEntity> notification = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "tbl_user_role",
+            joinColumns = {
+                    @JoinColumn(name = "user_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "role_id")
+            }
+    )
+    private Set<RoleEntity> role = new HashSet<>();
 
     public UserEntity() {
     }
@@ -55,6 +68,11 @@ public class UserEntity extends BasicEntity {
         this.isActive = isActive;
         this.isEmailVerified = isEmailVerified;
         this.isAdmin = isAdmin;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role;
     }
 
     /**
@@ -183,5 +201,21 @@ public class UserEntity extends BasicEntity {
      */
     public void setNotification(List<NotificationEntity> notification) {
         this.notification = notification;
+    }
+
+    /**
+     * Получить множество ролей
+     * @return множество ролей
+     */
+    public Set<RoleEntity> getRole() {
+        return role;
+    }
+
+    /**
+     * Установить множество ролей
+     * @param role множество ролей
+     */
+    public void setRole(Set<RoleEntity> role) {
+        this.role = role;
     }
 }

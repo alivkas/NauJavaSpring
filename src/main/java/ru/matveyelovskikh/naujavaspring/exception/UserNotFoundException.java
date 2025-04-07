@@ -14,4 +14,12 @@ public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(Long id) {
         super("Пользователя с id " + id + " не найдено");
     }
+
+    /**
+     * Сообщение исключения
+     * @param username имя пользователя
+     */
+    public UserNotFoundException(String username) {
+        super("Пользователя с именем " + username + " не найдено");
+    }
 }

@@ -2,6 +2,7 @@ package ru.matveyelovskikh.naujavaspring.mapstruct;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.matveyelovskikh.naujavaspring.dto.UserDto;
 import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
 
@@ -19,5 +20,7 @@ public interface UserMapper {
     @Mapping(target = "active", constant = "true")
     @Mapping(target = "emailVerified", constant = "false")
     @Mapping(target = "admin", constant = "false")
-    UserEntity toEntity(UserDto dto);
+    @Mapping(target = "password", expression = "java(passwordEncoder.encode(dto.password()))")
+    @Mapping(target = "role", ignore = true)
+    UserEntity toEntity(UserDto dto, PasswordEncoder passwordEncoder);
 }
