@@ -15,11 +15,11 @@
             <th>Events</th>
         </tr>
         <tr th:each="user : ${users}">
-            <td th:text="${user.getId()}"></td>
-            <td th:text="${user.getUsername()}"></td>
-            <td th:text="${user.getEmail()}"></td>
-            <td th:text="${user.getAdmin()}"></td>
-            <td th:text="${user.getEventsDay()}"></td>
+            <td th:text="${user.id()}"></td>
+            <td th:text="${user.username()}"></td>
+            <td th:text="${user.email()}"></td>
+            <td th:text="${user.admin()}"></td>
+            <td th:text="${user.eventsDayDtos()}"></td>
         </tr>
     </table>
 </body>

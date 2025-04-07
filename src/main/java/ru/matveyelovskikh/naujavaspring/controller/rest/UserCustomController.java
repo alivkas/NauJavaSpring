@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
+import ru.matveyelovskikh.naujavaspring.service.UserService;
 
 /**
  * Контроллер кастомного запроса в User
@@ -15,15 +15,15 @@ import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
 @RequestMapping("/custom/user")
 public class UserCustomController {
 
-    private final UserCrud userCrud;
+    private final UserService userService;
 
     /**
-     * Внедрение зависимости UserCrud
-     * @param userCrud crud пользователя
+     * Внедрение зависимости UserService
+     * @param userService сервис пользователя
      */
     @Autowired
-    public UserCustomController(UserCrud userCrud) {
-        this.userCrud = userCrud;
+    public UserCustomController(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -36,8 +36,7 @@ public class UserCustomController {
     @GetMapping(path = "/exist")
     public ResponseEntity<Boolean> isExist(@RequestParam String username,
                                      @RequestParam String email) {
-        boolean exist = userCrud.existsByUsernameAndEmail(username,
-                email);
+        boolean exist = userService.isUserExists(username, email);
         return ResponseEntity.ok().body(exist);
     }
 }

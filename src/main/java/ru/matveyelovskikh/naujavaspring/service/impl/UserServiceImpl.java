@@ -10,6 +10,8 @@ import ru.matveyelovskikh.naujavaspring.mapstruct.UserMapper;
 import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
 import ru.matveyelovskikh.naujavaspring.service.UserService;
 
+import java.util.List;
+
 /**
  * Реализация сервиса пользователя
  */
@@ -41,5 +43,16 @@ public class UserServiceImpl implements UserService {
         }
         UserEntity user = userMapper.toEntity(userDto);
         userCrud.save(user);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        List<UserEntity> users = (List<UserEntity>) userCrud.findAll();
+        return userMapper.toDtoList(users);
+    }
+
+    @Override
+    public Boolean isUserExists(String username, String email) {
+        return userCrud.existsByUsernameAndEmail(username, email);
     }
 }

@@ -1,17 +1,13 @@
 package ru.matveyelovskikh.naujavaspring.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.matveyelovskikh.naujavaspring.entity.NotificationEntity;
-import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
-import ru.matveyelovskikh.naujavaspring.exception.UserNotFoundException;
-import ru.matveyelovskikh.naujavaspring.repository.NotificationCrud;
-import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
+import ru.matveyelovskikh.naujavaspring.dto.NotificationDto;
+import ru.matveyelovskikh.naujavaspring.service.NotificationService;
 
 import java.util.List;
 
@@ -22,19 +18,15 @@ import java.util.List;
 @RequestMapping("/custom/notification")
 public class NotificationCustomController {
 
-    private final NotificationCrud notificationCrud;
-    private final UserCrud userCrud;
+    private final NotificationService notificationService;
 
     /**
-     * Внедрение зависимостей NotificationCrud, UserCrud
-     * @param notificationCrud crud уведомления
-     * @param userCrud crud пользователя
+     * Внедрение зависимостей NotificationService
+     * @param notificationService сервис уведомлений
      */
     @Autowired
-    public NotificationCustomController(NotificationCrud notificationCrud,
-                                        UserCrud userCrud) {
-        this.notificationCrud = notificationCrud;
-        this.userCrud = userCrud;
+    public NotificationCustomController(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 
     /**
@@ -43,11 +35,9 @@ public class NotificationCustomController {
      * @return список всех уведомлений пользователя
      */
     @GetMapping(path = "/all-by-user/{userId}")
-    public ResponseEntity<?> getAllNotificationsByUser(@PathVariable Long userId) {
-        UserEntity user = userCrud.findById(userId).orElseThrow(()
-                -> new UserNotFoundException(userId));
-        List<NotificationEntity> notifications = notificationCrud.findAllByUser(user);
-
+    public ResponseEntity<List<NotificationDto>> getAllNotificationsByUser(@PathVariable Long userId) {
+        List<NotificationDto> notifications = notificationService
+                .getAllNotificationsByUser(userId);
         return ResponseEntity.ok().body(notifications);
     }
 }

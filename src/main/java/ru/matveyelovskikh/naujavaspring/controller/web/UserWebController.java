@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
-import ru.matveyelovskikh.naujavaspring.repository.UserCrud;
+import ru.matveyelovskikh.naujavaspring.dto.UserDto;
+import ru.matveyelovskikh.naujavaspring.service.UserService;
 
 import java.util.List;
 
@@ -18,15 +18,15 @@ import java.util.List;
 @RequestMapping("/custom/users/view")
 public class UserWebController {
 
-    private final UserCrud userCrud;
+    private final UserService userService;
 
     /**
-     * Внедрение зависимости UserCrud
-     * @param userCrud crud пользователя
+     * Внедрение зависимости UserService
+     * @param userService сервис пользователя
      */
     @Autowired
-    public UserWebController(UserCrud userCrud) {
-        this.userCrud = userCrud;
+    public UserWebController(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -36,7 +36,7 @@ public class UserWebController {
      */
     @GetMapping(path = "/list")
     public String userListView(Model model) {
-        List<UserEntity> users = (List<UserEntity>) userCrud.findAll();
+        List<UserDto> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "userList";
     }
