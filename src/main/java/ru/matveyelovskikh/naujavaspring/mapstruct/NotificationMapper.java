@@ -7,6 +7,8 @@ import ru.matveyelovskikh.naujavaspring.entity.EventsDayEntity;
 import ru.matveyelovskikh.naujavaspring.entity.NotificationEntity;
 import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
 
+import java.util.List;
+
 /**
  * Маппер уведомления
  */
@@ -32,4 +34,19 @@ public interface NotificationMapper {
                                 UserEntity user,
                                 EventsDayEntity eventsDay);
 
+    /**
+     * Преобразование сущности в дто
+     * @param entity сущность
+     * @return дто
+     */
+    @Mapping(target = "eventsDayId", source = "eventsDay.id")
+    @Mapping(target = "userId", source = "user.id")
+    NotificationDto toDto(NotificationEntity entity);
+
+    /**
+     * Преобразовать список сущностей в список дто
+     * @param entities список сущностей
+     * @return список дто
+     */
+    List<NotificationDto> toDtoList(List<NotificationEntity> entities);
 }

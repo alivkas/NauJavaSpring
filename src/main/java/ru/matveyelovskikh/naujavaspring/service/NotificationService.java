@@ -4,6 +4,7 @@ import ru.matveyelovskikh.naujavaspring.dto.NotificationDto;
 import ru.matveyelovskikh.naujavaspring.entity.NotificationEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Интерфейс сервиса уведомлений
@@ -28,4 +29,11 @@ public interface NotificationService {
      * @return сущность уведомления
      */
     NotificationEntity createAndGetNotify(NotificationDto notificationDto);
+
+    /**
+     * Получить список уведомлений пользователя
+     * @param userId id пользователя
+     * @return список уведомлений пользователя
+     */
+    List<NotificationDto> getAllNotificationsByUser(Long userId);
 }

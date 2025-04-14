@@ -5,6 +5,8 @@ package ru.matveyelovskikh.naujavaspring.exception;
  */
 public class UserAlreadyExistException extends RuntimeException {
 
+    public final static Integer CODE = 409;
+
     /**
      * Сообщение об ошибке
      * @param name имя пользователя

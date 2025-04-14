@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+    <h1>Список пользователй</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>isAdmin</th>
+            <th>Events</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id()}"></td>
+            <td th:text="${user.username()}"></td>
+            <td th:text="${user.email()}"></td>
+            <td th:text="${user.admin()}"></td>
+            <td th:text="${user.eventsDayDtos()}"></td>
+        </tr>
+    </table>
+</body>
+</html>
