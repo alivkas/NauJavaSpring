@@ -13,7 +13,7 @@ import ru.matveyelovskikh.naujavaspring.configuration.ApplicationConfig;
 @Service
 public class ApplicationInfoService {
 
-    private static final Logger log = LoggerFactory.getLogger(ApplicationInfoService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationInfoService.class);
 
     private final ApplicationConfig applicationConfig;
 
@@ -32,7 +32,7 @@ public class ApplicationInfoService {
      */
     @PostConstruct
     public void printAppInfoAfter() {
-        log.info("Название приложения: {}", applicationConfig.getAppName());
-        log.info("Версия: {}", applicationConfig.getAppVersion());
+        LOG.info("Название приложения: {}", applicationConfig.getAppName());
+        LOG.info("Версия: {}", applicationConfig.getAppVersion());
     }
 }
