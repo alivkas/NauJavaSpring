@@ -7,8 +7,6 @@ import ru.matveyelovskikh.naujavaspring.interfaces.Command;
 import ru.matveyelovskikh.naujavaspring.interfaces.InputOutput;
 import ru.matveyelovskikh.naujavaspring.service.EventsDayService;
 
-import java.util.Map;
-
 /**
  * Определение команды /all-events
  */
@@ -39,10 +37,10 @@ public class AllEventCommand implements Command {
      * Вывод всех событий
      */
     private void allEvent() {
-        if (eventsDayService.getAllEvents().isEmpty()) {
+        if (eventsDayService.getAllEventsApi().isEmpty()) {
             console.output("Нет запланированных событий\n");
         }
-        for (EventsDayEntity event : eventsDayService.getAllEvents()) {
+        for (EventsDayEntity event : eventsDayService.getAllEventsService()) {
             console.output(event.toString());
         }
     }

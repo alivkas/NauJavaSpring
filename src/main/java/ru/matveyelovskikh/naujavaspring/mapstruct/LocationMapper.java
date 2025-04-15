@@ -18,4 +18,11 @@ public interface LocationMapper {
      */
     @Mapping(target = "archived", constant = "false")
     LocationEntity toEntity(LocationDto dto);
+
+    /**
+     * Маппиинг в дто
+     * @param entity сущность
+     * @return дто
+     */
+    LocationDto toDto(LocationEntity entity);
 }

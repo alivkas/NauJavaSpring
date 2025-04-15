@@ -9,10 +9,13 @@ import ru.matveyelovskikh.naujavaspring.entity.EventsDayEntity;
 import ru.matveyelovskikh.naujavaspring.entity.LocationEntity;
 import ru.matveyelovskikh.naujavaspring.entity.UserEntity;
 
+import java.util.List;
+
 /**
  * Маппер события
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        uses = {EventCategoryMapper.class, LocationMapper.class})
 public interface EventMapper {
 
     /**
@@ -40,4 +43,21 @@ public interface EventMapper {
                              UserEntity user,
                              EventCategoryEntity eventCategory,
                              LocationEntity location);
+
+    /**
+     * Маппинг в дто
+     * @param entity сущность
+     * @return дто
+     */
+    @Mapping(target = "eventCategoryDto", source = "eventCategory")
+    @Mapping(target = "locationDto", source = "location")
+    @Mapping(target = "userId", source = "user.id")
+    EventsDayDto toDto(EventsDayEntity entity);
+
+    /**
+     * Преобразовать список сущностей в список дто
+     * @param entities список сущностей
+     * @return список дто
+     */
+    List<EventsDayDto> toDtoList(List<EventsDayEntity> entities);
 }
