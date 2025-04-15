@@ -63,7 +63,7 @@ public class TransactMethodTests {
         );
 
         eventsDayService.createEventDay(dto);
-        Assertions.assertFalse(eventsDayService.getAllEvents().isEmpty());
+        Assertions.assertFalse(eventsDayService.getAllEventsApi().isEmpty());
 
         userCrud.deleteAll();
     }
@@ -92,6 +92,6 @@ public class TransactMethodTests {
         Assertions.assertEquals("Пользователя с id 999 не найдено",
                 exception.getMessage());
 
-        Assertions.assertTrue(eventsDayService.getAllEvents().isEmpty());
+        Assertions.assertTrue(eventsDayService.getAllEventsApi().isEmpty());
     }
 }

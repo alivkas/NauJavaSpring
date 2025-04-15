@@ -27,7 +27,7 @@ public class UserEntity extends BasicEntity implements UserDetails {
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<EventsDayEntity> eventsDay = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NotificationEntity> notification = new ArrayList<>();

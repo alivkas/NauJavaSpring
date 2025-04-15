@@ -4,9 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.matveyelovskikh.naujavaspring.exception.EventNotFoundException;
-import ru.matveyelovskikh.naujavaspring.exception.UserAlreadyExistException;
-import ru.matveyelovskikh.naujavaspring.exception.UserNotFoundException;
+import ru.matveyelovskikh.naujavaspring.exception.*;
 import ru.matveyelovskikh.naujavaspring.exception.response.ExceptionResponse;
 
 /**
@@ -46,6 +44,28 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionResponse handleUserNotFoundException(UserNotFoundException e) {
         return new ExceptionResponse(e.getMessage(), UserNotFoundException.CODE);
+    }
+
+    /**
+     * Перехват и обработка исключения ReportNotFoundException
+     * @param e ReportNotFoundException
+     * @return ExceptionResponse
+     */
+    @ExceptionHandler(ReportNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponse handleReportNotFoundException(ReportNotFoundException e) {
+        return new ExceptionResponse(e.getMessage(), ReportNotFoundException.CODE);
+    }
+
+    /**
+     * Перехват и обработка исключения ReportNotFoundException
+     * @param e ReportNotFoundException
+     * @return ExceptionResponse
+     */
+    @ExceptionHandler(ReportStatusException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionResponse handleReportStatusException(ReportStatusException e) {
+        return new ExceptionResponse(e.getMessage(), ReportStatusException.CODE);
     }
 
     /**
