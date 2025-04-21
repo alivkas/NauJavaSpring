@@ -68,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Scheduled(cron = "${cron.event.time}")
     @Override
     public void eventNotify() {
-        List<EventsDayEntity> events = eventsDayService.getAllEvents();
+        List<EventsDayEntity> events = eventsDayService.getAllEventsService();
         for (EventsDayEntity event : events) {
             if (shouldNotify(event.getCalendar())) {
                 event.setEventStatus(EventStatus.ACTIVE);

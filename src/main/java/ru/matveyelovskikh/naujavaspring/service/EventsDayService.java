@@ -4,7 +4,6 @@ import ru.matveyelovskikh.naujavaspring.dto.EventsDayDto;
 import ru.matveyelovskikh.naujavaspring.entity.EventsDayEntity;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Интерфейс бизнес логики дневных событий
@@ -16,13 +15,19 @@ public interface EventsDayService {
      * @param id id события
      * @return событие дня
      */
-    EventsDayEntity getEventById(Long id);
+    EventsDayDto getEventById(Long id);
 
     /**
-     * Получить все события
+     * Получить дто всех событий для контроллера
+     * @return список дто событий
+     */
+    List<EventsDayDto> getAllEventsApi();
+
+    /**
+     * Получить всех события для внутреннего использования
      * @return список событий
      */
-    List<EventsDayEntity> getAllEvents();
+    List<EventsDayEntity> getAllEventsService();
 
     /**
      * Создать событие

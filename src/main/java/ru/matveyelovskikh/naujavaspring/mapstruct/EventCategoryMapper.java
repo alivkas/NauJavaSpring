@@ -20,4 +20,11 @@ public interface EventCategoryMapper {
     @Mapping(target = "default", constant = "true")
     @Mapping(target = "archived", constant = "false")
     EventCategoryEntity toEntity(EventCategoryDto dto);
+
+    /**
+     * Маппинг в дто
+     * @param eventCategory сущность
+     * @return дто
+     */
+    EventCategoryDto toDto(EventCategoryEntity eventCategory);
 }

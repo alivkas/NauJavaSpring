@@ -57,13 +57,20 @@ public class EventsDayServiceImpl implements EventsDayService {
     }
 
     @Override
-    public EventsDayEntity getEventById(Long id) {
-        return eventsDayCrud.findById(id).orElseThrow(()
-                -> new EventNotFoundException(id));
+    public EventsDayDto getEventById(Long id) {
+        return eventMapper.toDto(eventsDayCrud.findById(id).orElseThrow(()
+                -> new EventNotFoundException(id)));
     }
 
     @Override
-    public List<EventsDayEntity> getAllEvents() {
+    public List<EventsDayDto> getAllEventsApi() {
+        List<EventsDayEntity> eventsDayEntities =
+                (List<EventsDayEntity>) eventsDayCrud.findAll();
+        return eventMapper.toDtoList(eventsDayEntities);
+    }
+
+    @Override
+    public List<EventsDayEntity> getAllEventsService() {
         return (List<EventsDayEntity>) eventsDayCrud.findAll();
     }
 
@@ -99,7 +106,8 @@ public class EventsDayServiceImpl implements EventsDayService {
     @Transactional
     @Override
     public void updateById(Long id, EventsDayDto eventsDay) {
-        EventsDayEntity event = getEventById(id);
+        EventsDayEntity event = eventsDayCrud.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
 
         if (!event.getEventStatus().equals(EventStatus.WAITING)) {
             throw new IllegalStateException("Изменение завершенного " +
@@ -112,7 +120,8 @@ public class EventsDayServiceImpl implements EventsDayService {
     @Transactional
     @Override
     public void acceptById(Long id) {
-        EventsDayEntity event = getEventById(id);
+        EventsDayEntity event = eventsDayCrud.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
 
         if (event.getEventStatus().equals(EventStatus.WAITING)) {
             throw new IllegalStateException("Событие с ID: " + id

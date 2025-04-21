@@ -31,6 +31,10 @@
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <org.mapstruct.extensions.spring.version>1.0.1</org.mapstruct.extensions.spring.version>
         <webmvc-ui.version>2.8.6</webmvc-ui.version>
+        <junit-jupiter.version>5.9.0</junit-jupiter.version>
+        <rest-assured.version>5.5.1</rest-assured.version>
+        <selenium-java.version>4.10.0</selenium-java.version>
+        <webdrivermanager.vesrsion>5.5.3</webdrivermanager.vesrsion>
     </properties>
     <dependencies>
         <dependency>
@@ -101,6 +105,37 @@
             <groupId>org.mapstruct.extensions.spring</groupId>
             <artifactId>mapstruct-spring-extensions</artifactId>
             <version>${org.mapstruct.extensions.spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Selenium 4 -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium-java.version}</version>
+        </dependency>
+        <!-- WebDriverManager -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.vesrsion}</version>
         </dependency>
 
     </dependencies>
