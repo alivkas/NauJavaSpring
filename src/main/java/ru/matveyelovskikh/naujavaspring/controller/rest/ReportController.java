@@ -14,7 +14,7 @@ import java.util.Map;
  * REST контроллер отчета
  */
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/api/public/reports")
 public class ReportController {
 
     private final ReportService reportService;

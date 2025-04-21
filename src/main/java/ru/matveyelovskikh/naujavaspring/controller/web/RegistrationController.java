@@ -30,7 +30,6 @@ public class RegistrationController {
         return "register";
     }
 
-
     @PostMapping("/register")
     public String registerUser(UserDto user, Model model) {
         try {

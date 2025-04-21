@@ -35,13 +35,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                .requestMatchers("/api/public/**," +
-                        "/register").permitAll()
-                .requestMatchers("/swagger-ui/**," +
-                        "/v3/api-docs/**," +
+                .requestMatchers("/api/public/**", "/register").permitAll()
+                .requestMatchers("/swagger-ui/**",
+                        "/v3/api-docs/**",
                         "/api/private/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated())
-//                .formLogin(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
